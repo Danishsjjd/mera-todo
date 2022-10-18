@@ -6,15 +6,15 @@ exports.createTodo = async (req, res) => {
 };
 
 exports.deleteTodo = async (req, res) => {
-  const { id } = req.body;
-  await Todo.findByIdAndDelete(id);
+  const { _id } = req.body;
+  await Todo.findByIdAndDelete(_id);
 
   res.send("Deleted Successfully");
 };
 
 exports.updateTodo = async (req, res) => {
-  const { completed, todo, id } = req.body;
-  const fetchTodo = await Todo.findById(id);
+  const { completed, todo, _id } = req.body;
+  const fetchTodo = await Todo.findById(_id);
 
   if (todo?.length > 0) fetchTodo.todo = todo;
   if (completed != undefined) fetchTodo.completed = completed;

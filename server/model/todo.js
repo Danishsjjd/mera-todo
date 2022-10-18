@@ -23,7 +23,7 @@ const msg = "please explain your todo";
 
 const vCreateTodo = (obj) => {
   const schema = Joi.object({
-    todo: Joi.array().min(5).required().messages({
+    todo: Joi.string().min(5).required().messages({
       "string.min": msg,
       "string.empty": msg,
       "any.required": "Please enter your todo",
@@ -34,7 +34,7 @@ const vCreateTodo = (obj) => {
 
 const vDeleteTodo = (obj) => {
   const schema = Joi.object({
-    id: Joi.objectId().required(),
+    _id: Joi.objectId().required(),
   });
   return schema.validate(obj, { errors: { wrap: { label: false } } });
 };
@@ -46,7 +46,7 @@ const vUpdateTodo = (obj) => {
       "string.base": "must be string",
       "string.min": "please explain your todo",
     }),
-    id: Joi.objectId().required(),
+    _id: Joi.objectId().required(),
     completed: Joi.boolean().messages({
       "boolean.base": "must be boolean",
     }),

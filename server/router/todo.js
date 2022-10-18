@@ -12,6 +12,6 @@ const {
 router.get("/", getTodo);
 router.post("/", validate(vCreateTodo), createTodo);
 router.delete("/", validate(vDeleteTodo), deleteTodo);
-router.patch("/", validate(vUpdateTodo), updateTodo);
+router.put("/", validate(vUpdateTodo), updateTodo);
 
 module.exports = router;
