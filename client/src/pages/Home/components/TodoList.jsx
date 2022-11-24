@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { AnimatePresence, motion } from "framer-motion";
 import { useSelector } from "react-redux";
 import { RotatingLines } from "react-loader-spinner";
 import { BsTrash } from "react-icons/bs";
@@ -32,59 +33,62 @@ const TodoList = ({ filter }) => {
   };
 
   return (
-    <div className="mt-8 flex flex-col gap-1">
-      {todo.map(({ _id, todo, completed }) => {
-        if (applyFilter && filtered !== completed) return null;
-        return (
-          <div
-            key={_id}
-            className="flex gap-1 rounded border-[1px] border-white/70 bg-white/10 text-white"
-          >
-            <div
-              className={`grow break-all p-4 ${
-                completed ? "line-through" : ""
-              }`}
+    <motion.div className="mt-8 flex flex-col gap-1">
+      <AnimatePresence mode="popLayout">
+        {todo.map(({ _id, todo, completed }) => {
+          if (applyFilter && filtered !== completed) return null;
+          return (
+            <motion.div
+              key={_id}
+              className="flex gap-1 rounded border-[1px] border-white/70 bg-white/10 text-white"
+              layout
             >
-              {todo}
-            </div>
-            <div className="flex">
-              <div className="relative inset-0 flex w-10 cursor-pointer justify-center  bg-white/20  hover:bg-white/30">
-                {operator === "delete" && idForLoader === _id ? (
-                  <RotatingLines
-                    strokeColor="white"
-                    strokeWidth="5"
-                    animationDuration="0.75"
-                    visible={true}
-                    width={25}
-                  />
-                ) : (
-                  <BsTrash
-                    className="h-full w-full px-2 text-xl"
-                    onClick={() => deleteTodoFunc(_id)}
-                  />
-                )}
+              <div
+                className={`grow break-all p-4 ${
+                  completed ? "line-through" : ""
+                }`}
+              >
+                {todo}
               </div>
-              <div className="relative inset-0 flex w-10 cursor-pointer justify-center  bg-white/20  hover:bg-white/30">
-                {operator === "update" && idForLoader === _id ? (
-                  <RotatingLines
-                    strokeColor="white"
-                    strokeWidth="5"
-                    animationDuration="0.75"
-                    visible={true}
-                    width={25}
-                  />
-                ) : (
-                  <TiTick
-                    className="h-full w-full px-1 text-2xl"
-                    onClick={() => completeTodoFunc({ _id, completed, todo })}
-                  />
-                )}
+              <div className="flex">
+                <div className="relative inset-0 flex w-10 cursor-pointer justify-center  bg-white/20  hover:bg-white/30">
+                  {operator === "delete" && idForLoader === _id ? (
+                    <RotatingLines
+                      strokeColor="white"
+                      strokeWidth="5"
+                      animationDuration="0.75"
+                      visible={true}
+                      width={25}
+                    />
+                  ) : (
+                    <BsTrash
+                      className="h-full w-full px-2 text-xl"
+                      onClick={() => deleteTodoFunc(_id)}
+                    />
+                  )}
+                </div>
+                <div className="relative inset-0 flex w-10 cursor-pointer justify-center  bg-white/20  hover:bg-white/30">
+                  {operator === "update" && idForLoader === _id ? (
+                    <RotatingLines
+                      strokeColor="white"
+                      strokeWidth="5"
+                      animationDuration="0.75"
+                      visible={true}
+                      width={25}
+                    />
+                  ) : (
+                    <TiTick
+                      className="h-full w-full px-1 text-2xl"
+                      onClick={() => completeTodoFunc({ _id, completed, todo })}
+                    />
+                  )}
+                </div>
               </div>
-            </div>
-          </div>
-        );
-      })}
-    </div>
+            </motion.div>
+          );
+        })}
+      </AnimatePresence>
+    </motion.div>
   );
 };
 
