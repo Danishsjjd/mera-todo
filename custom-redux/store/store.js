@@ -1,35 +1,33 @@
-const _state = new WeakMap();
-const _listeners = new WeakMap();
-
 class CustomStore {
+  #state
+  #listeners
+
   constructor(reducer) {
-    _state.set(this, reducer());
-    _listeners.set(this, []);
+    this.#state = reducer()
+    this.#listeners = []
 
     this.dispatch = (action) => {
-      const results = reducer(_state.get(this), action);
-      _state.set(this, results);
+      const results = reducer(this.#state, action);
+      this.#state = results
 
-      for (let i of _listeners.get(this)) i();
+      for (let i of this.#listeners) i();
     };
 
     this.subscribe = (cb) => {
-      const listeners = _listeners.get(this);
-      _listeners.set(this, [...listeners, cb]);
+      this.#listeners = [...this.#listeners, cb]
 
       return () =>
-        _listeners.set(
-          this,
-          listeners.filter((cbRemove) => cbRemove !== cb)
-        );
+        this.#listeners = this.#listeners.filter((cbRemove) => cbRemove !== cb)
+
     };
   }
 
   get getState() {
-    return _state.get(this);
+    return this.#state
   }
 }
 
 export const createStore = (reducer) => {
-  return new CustomStore(reducer);
+  const store = new CustomStore(reducer);
+  return store
 };
